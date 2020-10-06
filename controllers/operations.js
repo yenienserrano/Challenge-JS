@@ -3,7 +3,6 @@ const moment = require('moment');
 
 const Operation = require('../model/operations')
 
-
 const getOperations = async(req, res) =>{
     try {
 
@@ -27,13 +26,9 @@ const getEgresado = async(req, res) =>{
 
         const operations = await Operation.find()
 
-        const result = operations.reverse().filter(operation => operation.tipo == "Egreso")
+        const result = operations.reverse().filter(operation => operation.tipo == "Egreso")        
 
-        
-
-        var egresoTotal = result.reduce((sum, value) => (typeof value.monto == "number" ? sum + value.monto : sum), 0);
-
-        
+        var egresoTotal = result.reduce((sum, value) => (typeof value.monto == "number" ? sum + value.monto : sum), 0);        
 
         res.status(200).send({
             result,
@@ -80,7 +75,6 @@ const saveOperation = async (req, res = response) => {
     try {
         const operation = new Operation( req.body )
 
-
         operation.fecha = moment().format('ll'); 
 
         await operation.save()
@@ -100,6 +94,7 @@ const saveOperation = async (req, res = response) => {
 }
 
 const editOperation = async (req, res = response) => {
+
     const uid = req.params.id
 
     try {
@@ -111,7 +106,6 @@ const editOperation = async (req, res = response) => {
                 msg: "No existe la operacion"
             })
         }
-
 
         const { fecha, tipo, ...camp} =  req.body
 
@@ -136,6 +130,7 @@ const deleteOperation = async (req, res = response ) => {
     const uid = req.params.id
 
     try {
+        
         const operationEdit = await Operation.findById( uid )
 
         if( !operationEdit ){
